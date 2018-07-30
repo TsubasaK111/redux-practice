@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const builds = require("./builds");
-const { store } = require("../../models/projects/index");
+const { store, addProject, dropProject } = require("../../models/projects/index");
 
 
 router.get("/", (req, res) => {
@@ -9,15 +9,14 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   const { project } = req.body;
-  
-  // TODO Add new project, give it an id and send it back.
-  res.status(418).json({ message: "Not Implemented" });
+  store.dispatch(addProject(project));
+  res.status(200).json(store.getState());
 });
 
 router.get("/:projectId", (req, res) => {
   const { projectId } = req.params;
-  // TODO retrieve and send project with given id
-  res.status(418).json({ message: "Not Implemented" });
+  const allProjects = store.getState();
+  res.status(200).json(allProjects[projectId]);
 });
 
 router.patch("/:projectId", (req, res) => {
@@ -29,8 +28,9 @@ router.patch("/:projectId", (req, res) => {
 
 router.delete("/:projectId", (req, res) => {
   const { projectId } = req.params;
-  // TODO delete project, return status 200 with no body on success
-  res.status(418).json({ message: "Not Implemented" });
+  console.log(projectId);
+  store.dispatch(dropProject(projectId));
+  res.status(200).json(store.getState());
 });
 
 router.use("/:projectId/builds", builds);
