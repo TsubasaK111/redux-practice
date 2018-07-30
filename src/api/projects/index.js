@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const builds = require("./builds");
-const { store, addProject, dropProject, updateProject } = require("../../models/projects/index");
+const { store, addProject, dropProject, updateProject } = require("../../models");
 
 
 router.get("/", (req, res) => {

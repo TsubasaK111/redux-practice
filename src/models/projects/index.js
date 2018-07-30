@@ -1,25 +1,10 @@
-const redux = require("redux");
+// const redux = require("redux");
 const shortid = require('shortid');
+const actions = require("./actions");
 
-const initState = { projects: [] };
+// const initState = { projects: [] };
 
-const addProject = project => ({
-  type: "ADD_PROJECT",
-  project
-});
-
-const dropProject = projectId => ({
-  type: "DROP_PROJECT",
-  projectId
-});
-
-const updateProject = (projectId, project) => ({
-  type: "UPDATE_PROJECT",
-  projectId,
-  project
-});
-
-const projectReducer = (state = initialState, action) => {
+const projectReducer = (projectsState = [], action) => {
   switch (action.type) {
     case "ADD_PROJECT": {
       const newProject = {
@@ -27,30 +12,34 @@ const projectReducer = (state = initialState, action) => {
         id: shortid.generate()
       };
 
-      return { projects: [...state.projects, newProject] };
+      return [...projectsState, newProject];
     }
     case "DROP_PROJECT": {
-      const newProjects = state.projects.filter(project => project.id !== action.projectId);
+      const newProjects = projectsState.filter(project => project.id !== action.projectId);
 
-      return { projects: newProjects };
+      return newProjects;
     }
     case "UPDATE_PROJECT": {
-      const newProjects = [...state.projects];
+      const newProjects = [...projectsState];
       const projectIndex = newProjects.findIndex(project => project.id === action.projectId);
       const updatedProject = { ...newProjects[projectIndex], ...action.project }
 
       newProjects[projectIndex] = updatedProject;
 
-      return { projects: newProjects };
+      return newProjects;
     }
     default:
-      return state;
+      return projectsState;
   }
 };
 
-const store = redux.createStore(
-  projectReducer,
-  initState
-);
+// const store = redux.createStore(
+//   projectReducer,
+//   initState
+// );
 
-module.exports = { store, addProject, dropProject, updateProject };
+// module.exports = {
+//   ...actions,  store,
+// };
+
+module.exports = { projectReducer, ...actions };
