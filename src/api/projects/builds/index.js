@@ -3,20 +3,24 @@ const { store, addBuild } = require("../../../models");
 
 router.get("/", (req, res) => {
   const { projectId } = req.params;
-  const allProjects = store.getState().projects;
-  const project = allProjects.filter(project => {
-    console.log(`projectId`, projectId,`project.id`,project.id, project.id === projectId);
-    return project.id === projectId
-  });
-  // TODO Get and return all builds of given project
-  res.status(200).json({ builds: project.builds });
-  // res.status(418).json({ message: "Not Implemented" });
+  const allBuilds = store.getState().builds;
+  const resBuilds = allBuilds.filter(build => build.projectId === projectId);
+  res.status(200).json({ builds: resBuilds });
 });
 
 router.post("/", (req, res) => {
   const { projectId } = req.params;
+  const { build } = req.body;
+
+  if (!projectId || !build) res.status(400).send("broooo, stop being a douche");
+
+  store.dispatch(addBuild(projectId, build));
+
+  const allBuilds = store.getState().builds;
+  const resBuilds = allBuilds.filter(build => build.projectId);
+  const resBuild = resBuilds[resBuilds.length - 1];
+  res.status(200).json({ build: resBuild });
   // TODO Trigger a new build for a project. Return immediately with status 200 (don't wait for build to finish).
-  res.status(418).json({ message: "Not Implemented" });
 });
 
 router.get("/latest", (req, res) => {

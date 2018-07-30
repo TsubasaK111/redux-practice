@@ -1,8 +1,6 @@
-// const redux = require("redux");
 const shortid = require('shortid');
 const actions = require("./actions");
 
-// const initState = { projects: [] };
 
 const projectReducer = (projectsState = [], action) => {
   switch (action.type) {
@@ -33,13 +31,5 @@ const projectReducer = (projectsState = [], action) => {
   }
 };
 
-// const store = redux.createStore(
-//   projectReducer,
-//   initState
-// );
-
-// module.exports = {
-//   ...actions,  store,
-// };
 
 module.exports = { projectReducer, ...actions };
