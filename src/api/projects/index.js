@@ -1,13 +1,15 @@
 const router = require("express").Router();
 const builds = require("./builds");
+const { store } = require("../../models/projects/index");
+
 
 router.get("/", (req, res) => {
-  // TODO retrieve and send all projects
-  res.status(418).json({ message: "Not Implemented" });
+  res.status(200).json(store.getState());
 });
 
-router.put("/", (req, res) => {
+router.post("/", (req, res) => {
   const { project } = req.body;
+  
   // TODO Add new project, give it an id and send it back.
   res.status(418).json({ message: "Not Implemented" });
 });

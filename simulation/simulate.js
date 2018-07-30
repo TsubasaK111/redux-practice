@@ -61,7 +61,7 @@ const getJson = async (url, options) => {
 const insertProjects = async () =>
   initialProjects.map((proj) =>
     getJson(projEndPoint, {
-      method: "PUT",
+      method: "POST",
       body: JSON.stringify(proj),
     })
   );
@@ -69,7 +69,7 @@ const insertProjects = async () =>
 const testInsert = async () => {
   console.info("GET /api/projects");
   expect(await getJson(projEndPoint)).to.eql({ projects: [] });
-  console.info("PUT /api/projects");
+  console.info("POST /api/projects");
   insertedProjects = await Promise.all(insertProjects());
   const expected = { projects: [...initialProjects] };
   const projects = await getJson(projEndPoint);
