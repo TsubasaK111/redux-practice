@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const builds = require("./builds");
-const { store, addProject, dropProject } = require("../../models/projects/index");
+const { store, addProject, dropProject, updateProject } = require("../../models/projects/index");
 
 
 router.get("/", (req, res) => {
@@ -16,20 +16,23 @@ router.post("/", (req, res) => {
 router.get("/:projectId", (req, res) => {
   const { projectId } = req.params;
   const allProjects = store.getState();
-  res.status(200).json(allProjects[projectId]);
+  const project = allProjects.filter( project => project.id === projectId);
+  res.status(200).json(project[0]);
 });
 
-router.patch("/:projectId", (req, res) => {
-  const { projectId } = req.params;
-  const { project } = req.body;
-  // TODO edit a projects information. Make sure to validate whats being sent!
-  res.status(418).json({ message: "Not Implemented" });
-});
 
 router.delete("/:projectId", (req, res) => {
   const { projectId } = req.params;
   console.log(projectId);
   store.dispatch(dropProject(projectId));
+  res.status(200).json(store.getState());
+});
+
+router.patch("/:projectId", (req, res) => {
+  const { projectId } = req.params;
+  const { project } = req.body;
+  store.dispatch(updateProject(projectId, project));
+  // TODO edit a projects information. Make sure to validate whats being sent!
   res.status(200).json(store.getState());
 });
 

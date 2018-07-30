@@ -19,6 +19,11 @@ const dropProject = projectId => ({
   projectId
 });
 
+const updateProject = (projectId, project) => ({
+  type: "UPDATE_PROJECT",
+  projectId,
+  project
+});
 
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -34,6 +39,15 @@ const projectReducer = (state = initialState, action) => {
 
       return newState;
     }
+    case "UPDATE_PROJECT": {
+      const newState = [...state];
+      const projectIndex = newState.findIndex(project => project.id === action.projectId);
+      const updatedProject = { ...state[projectIndex], ...action.project }
+      
+      newState[projectIndex] = updatedProject;
+
+      return newState;
+    }
     default:
       return state;
   }
@@ -44,4 +58,4 @@ const store = redux.createStore(
   initState
 );
 
-module.exports = { store, addProject, dropProject };
+module.exports = { store, addProject, dropProject, updateProject };
