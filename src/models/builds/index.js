@@ -1,6 +1,4 @@
-// const redux = require("redux");
 const shortid = require('shortid');
-const { Stack } = require("immutable");
 
 const addBuild = (projectId, build) => ({
   type: "ADD_BUILD",
@@ -8,17 +6,35 @@ const addBuild = (projectId, build) => ({
   build,
 });
 
+class Build {
+  constructor(buildsState, addBuildAction) {
+    for (var prop in addBuildAction.build) {
+      this[prop] = addBuildAction.build[prop];
+    }
+    
+    this.id = shortid.generate();
+    this.projectId = addBuildAction.projectId;
+    this.buildNumber = this.getBuildNumber(buildsState);
+  }
+
+  getBuildNumber(buildsState) {
+    let previousBuild = buildsState
+      .filter(build => build.projectId === this.projectId)
+      .slice()
+      .pop();
+
+    if (!previousBuild || !previousBuild["buildNumber"]) {
+      return 1;
+    } else {
+      return previousBuild["buildNumber"] + 1;
+    }
+  }
+}
 
 const buildReducer = (buildsState = [], action) => {
-  if (buildsState === []) console.log(`buildsState is empty: action`, action)
-  
   switch (action.type) {
     case "ADD_BUILD": {
-      const newBuild = {
-        ...action.build,
-        id: shortid.generate(),
-        projectId: action.projectId
-      };
+      const newBuild = new Build(buildsState, action);
       return [...buildsState, newBuild];
     }
     default:

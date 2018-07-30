@@ -4,7 +4,7 @@ const { store, addProject, dropProject, updateProject } = require("../../models"
 
 
 router.get("/", (req, res) => {
-  res.status(200).json(store.getState());
+  res.status(200).json({projects: store.getState().projects});
 });
 
 router.post("/", (req, res) => {

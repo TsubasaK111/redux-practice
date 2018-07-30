@@ -16,8 +16,10 @@ router.post("/", (req, res) => {
 
   store.dispatch(addBuild(projectId, build));
 
-  const allBuilds = store.getState().builds;
-  const resBuilds = allBuilds.filter(build => build.projectId);
+  const resBuilds = store
+    .getState()
+    .builds
+    .filter(build => build.projectId === projectId);
   const resBuild = resBuilds[resBuilds.length - 1];
   res.status(200).json({ build: resBuild });
   // TODO Trigger a new build for a project. Return immediately with status 200 (don't wait for build to finish).
@@ -25,14 +27,30 @@ router.post("/", (req, res) => {
 
 router.get("/latest", (req, res) => {
   const { projectId } = req.params;
-  // TODO Retrieve the latest build of a project
-  res.status(418).json({ message: "Not Implemented" });
+  const resBuilds = store
+    .getState()
+    .builds
+    .filter(build => build.projectId === projectId);
+  const resBuild = resBuilds[resBuilds.length - 1];
+  res.status(200).json({ build: resBuild });
 });
 
 router.get("/:buildId", (req, res) => {
+
   const { projectId, buildId } = req.params;
+  const resBuilds = store
+    .getState()
+    .builds
+    .filter(build => build.projectId === projectId)
+    .filter(build => build.id === buildId);
+  
+    if (resBuilds.length === 0) res.status(400).send("broooo, stop being a douche");
+
+  const resBuild = resBuilds[resBuilds.length - 1];
+  res.status(200).json({ build: resBuild });
+
   // TODO Retrieve a single build from a project
-  res.status(418).json({ message: "Not Implemented" });
+  // res.status(418).json({ message: "Not Implemented" });
 });
 
 module.exports = router;
