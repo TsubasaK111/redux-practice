@@ -26,8 +26,7 @@ const projectReducer = (state = initialState, action) => {
         ...action.project,
         id: shortid.generate()
       };
-      console.log(newProject);
-      
+
       return { projects: [...state.projects, newProject] };
     }
     case "DROP_PROJECT": {
@@ -38,7 +37,7 @@ const projectReducer = (state = initialState, action) => {
     case "UPDATE_PROJECT": {
       const newProjects = [...state.projects];
       const projectIndex = newProjects.findIndex(project => project.id === action.projectId);
-      const updatedProject = { ...state[projectIndex], ...action.project }
+      const updatedProject = { ...newProjects[projectIndex], ...action.project }
 
       newProjects[projectIndex] = updatedProject;
 

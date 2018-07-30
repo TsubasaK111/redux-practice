@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
     const resProject = allProjects.filter( resProject => resProject.url === project.url)[0];
     res.status(200).json(resProject);
   } else {
-    res.status(400).json({result: "bro stop being a douche"});
+    res.status(400).json({result: "broooo, stop being a douche"});
   }
 });
 
