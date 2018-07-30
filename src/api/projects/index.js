@@ -9,21 +9,25 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   const { project } = req.body;
-  store.dispatch(addProject(project));
-  res.status(200).json(store.getState());
+  if(project){
+    store.dispatch(addProject(project));
+    const allProjects = store.getState().projects;
+    const resProject = allProjects.filter( resProject => resProject.url === project.url)[0];
+    res.status(200).json(resProject);
+  } else {
+    res.status(400).json({result: "bro stop being a douche"});
+  }
 });
 
 router.get("/:projectId", (req, res) => {
   const { projectId } = req.params;
-  const allProjects = store.getState();
+  const allProjects = store.getState().projects;
   const project = allProjects.filter( project => project.id === projectId);
   res.status(200).json(project[0]);
 });
 
-
 router.delete("/:projectId", (req, res) => {
   const { projectId } = req.params;
-  console.log(projectId);
   store.dispatch(dropProject(projectId));
   res.status(200).json(store.getState());
 });

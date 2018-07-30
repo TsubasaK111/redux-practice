@@ -1,13 +1,7 @@
 const redux = require("redux");
 const shortid = require('shortid');
 
-const initState = [{
-  "id": "hykjdLm", // TODO: string generated with shortid
-  "name": "vscode",
-  "url": "git@github.com:Microsoft/vscode.git",
-  "buildCommand": "yarn && yarn test",
-  "language": "JavaScript"
-}]
+const initState = { projects: [] };
 
 const addProject = project => ({
   type: "ADD_PROJECT",
@@ -32,21 +26,23 @@ const projectReducer = (state = initialState, action) => {
         ...action.project,
         id: shortid.generate()
       };
-      return [...state, newProject];
+      console.log(newProject);
+      
+      return { projects: [...state.projects, newProject] };
     }
     case "DROP_PROJECT": {
-      const newState = state.filter(project => project.id !== action.projectId);
+      const newProjects = state.projects.filter(project => project.id !== action.projectId);
 
-      return newState;
+      return { projects: newProjects };
     }
     case "UPDATE_PROJECT": {
-      const newState = [...state];
-      const projectIndex = newState.findIndex(project => project.id === action.projectId);
+      const newProjects = [...state.projects];
+      const projectIndex = newProjects.findIndex(project => project.id === action.projectId);
       const updatedProject = { ...state[projectIndex], ...action.project }
-      
-      newState[projectIndex] = updatedProject;
 
-      return newState;
+      newProjects[projectIndex] = updatedProject;
+
+      return { projects: newProjects };
     }
     default:
       return state;
