@@ -1,9 +1,16 @@
 const router = require("express").Router({ mergeParams: true });
+const { store, addBuild } = require("../../../models");
 
 router.get("/", (req, res) => {
   const { projectId } = req.params;
+  const allProjects = store.getState().projects;
+  const project = allProjects.filter(project => {
+    console.log(`projectId`, projectId,`project.id`,project.id, project.id === projectId);
+    return project.id === projectId
+  });
   // TODO Get and return all builds of given project
-  res.status(418).json({ message: "Not Implemented" });
+  res.status(200).json({ builds: project.builds });
+  // res.status(418).json({ message: "Not Implemented" });
 });
 
 router.post("/", (req, res) => {
