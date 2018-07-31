@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
   await Promise.delay(3000);
   store.dispatch(startBuild(projectId, build));
   // super complex build logic following, check out project, run yarn test etc etc
-  
+
   const resBuilds = store
     .getState()
     .builds
@@ -54,9 +54,6 @@ router.get("/:buildId", (req, res) => {
 
   const resBuild = resBuilds[resBuilds.length - 1];
   res.status(200).json({ build: resBuild });
-
-  // TODO Retrieve a single build from a project
-  // res.status(418).json({ message: "Not Implemented" });
 });
 
 module.exports = router;
