@@ -1,7 +1,13 @@
-const addBuild = (projectId, build) => ({
-  type: "ADD_BUILD",
+const startBuild = (projectId, build) => ({
+  type: "START_BUILD",
   projectId,
   build,
 });
 
-module.exports = { addBuild }
+const finishBuild = (projectId, buildId) => ({
+  type: "FINISH_BUILD",
+  projectId,
+  buildId,
+});
+
+module.exports = { startBuild, finishBuild }
