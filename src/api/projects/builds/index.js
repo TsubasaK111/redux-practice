@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
 
   await Promise.delay(3000);
   store.dispatch(finishBuild(projectId, resBuild.id));
+
 });
 
 router.get("/latest", (req, res) => {
