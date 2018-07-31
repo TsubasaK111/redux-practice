@@ -28,9 +28,7 @@ const buildProject = async (projectId, build) => {
 };
 
 const triggerBuild = async (projectId, build) => {
-  // TODO add this new build to application state!
-  // You also have to get the new build number assigned to it here.
-  const buildNumber = -1; // Needs to be gotten from state!
+  // Build number is automatically assigned in Build.
   queue.push(() => buildProject(projectId, build));
 };
 
