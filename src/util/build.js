@@ -1,9 +1,6 @@
 const Promise = require("bluebird");
 const Queue = require("queue");
 
-const queue = Queue();
-queue.autostart = true;
-queue.concurrency = 1;
 
 const buildProject = async (projectId, buildNumber) => {
   await Promise.delay(3000); // Please leave this in to simulate load
@@ -12,8 +9,6 @@ const buildProject = async (projectId, buildNumber) => {
 
   // super complex build logic following, check out project, run yarn test etc etc
   await Promise.delay(3000); // Do not modify this timing
-  const buildStatus = Math.random() > 0.5 ? "Failed" : "Success";
-  const output = "Donezo!";
 
   // TODO Set build status and output in app state!
 };

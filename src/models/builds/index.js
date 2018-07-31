@@ -1,17 +1,15 @@
 const shortid = require('shortid');
-
-const addBuild = (projectId, build) => ({
-  type: "ADD_BUILD",
-  projectId,
-  build,
-});
+const actions = require("./actions");
 
 class Build {
   constructor(buildsState, addBuildAction) {
     for (var prop in addBuildAction.build) {
       this[prop] = addBuildAction.build[prop];
     }
-    
+
+    this.buildStatus = Math.random() > 0.5 ? "Failed" : "Success";    
+    this.output = "Donezo!";
+
     this.id = shortid.generate();
     this.projectId = addBuildAction.projectId;
     this.buildNumber = this.getBuildNumber(buildsState);
@@ -43,4 +41,4 @@ const buildReducer = (buildsState = [], action) => {
 };
 
 
-module.exports = { buildReducer, addBuild };
+module.exports = { buildReducer, ...actions };
