@@ -1,5 +1,6 @@
 const router = require("express").Router({ mergeParams: true });
 const { store, startBuild, finishBuild } = require("../../../models");
+const { triggerBuild } = require("../../../util/build");
 
 const Promise = require("bluebird");
 
@@ -16,9 +17,7 @@ router.post("/", async (req, res) => {
 
   if (!projectId || !build) res.status(400).send("broooo, stop being a douche");
 
-  await Promise.delay(3000);
-  store.dispatch(startBuild(projectId, build));
-  // super complex build logic following, check out project, run yarn test etc etc
+  await triggerBuild(projectId, build);
 
   const resBuilds = store
     .getState()
@@ -26,10 +25,6 @@ router.post("/", async (req, res) => {
     .filter(build => build.projectId === projectId);
   const resBuild = resBuilds[resBuilds.length - 1];
   res.status(200).json({ build: resBuild });
-
-  await Promise.delay(3000);
-  store.dispatch(finishBuild(projectId, resBuild.id));
-
 });
 
 router.get("/latest", (req, res) => {
