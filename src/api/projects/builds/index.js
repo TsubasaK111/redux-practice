@@ -16,8 +16,10 @@ router.post("/", async (req, res) => {
 
   if (!projectId || !build) res.status(400).send("broooo, stop being a douche");
 
+  await Promise.delay(3000);
   store.dispatch(startBuild(projectId, build));
-
+  // super complex build logic following, check out project, run yarn test etc etc
+  
   const resBuilds = store
     .getState()
     .builds
@@ -27,7 +29,6 @@ router.post("/", async (req, res) => {
 
   await Promise.delay(3000);
   store.dispatch(finishBuild(projectId, resBuild.id));
-
 });
 
 router.get("/latest", (req, res) => {
