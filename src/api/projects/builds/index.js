@@ -1,8 +1,6 @@
 const router = require("express").Router({ mergeParams: true });
-const { store, startBuild, finishBuild } = require("../../../models");
+const { store } = require("../../../models");
 const { triggerBuild } = require("../../../util/build");
-
-const Promise = require("bluebird");
 
 router.get("/", (req, res) => {
   const { projectId } = req.params;
